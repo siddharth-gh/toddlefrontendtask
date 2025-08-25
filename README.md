@@ -78,6 +78,7 @@ To preview the production build locally:
 ```bash
 npm run preview
 ```
+
 ## Folder Structure
 
 ```
@@ -89,7 +90,8 @@ my-react-app/
 ├── public/              # Public assets
 ├── src/                 # Source files
 │   ├── assets/          # Static assets
-│   ├── components/      # React components (add as needed)
+│   ├── components/      # React components
+│   ├── utils/           # Utilities
 │   ├── App.jsx          # Root component
 │   └── main.jsx         # Entry point
 └── index.html           # HTML template
@@ -101,18 +103,23 @@ src/
   │   ├── modules/
   │   │   ├── CourseBuilder.jsx     # Main component that orchestrates the application
   │   │   ├── ModuleCard.jsx        # Component for displaying individual modules
+  │   │   ├── ItemCard.jsx          # Component for displaying individual and module items (links, files)
   │   │   ├── ModuleModal.jsx       # Modal for creating/editing modules
-  │   │   ├── ModuleItem.jsx        # Component for displaying module items (links, files)
   │   │   ├── LinkModal.jsx         # Modal for adding links to modules
   │   │   └── UploadModal.jsx       # Modal for uploading files to modules
+  │   │   └── Outline.jsx           # Modal for displaying Course outline if more than 1 course
   │   └── ui/
   │       ├── Header.jsx            # Application header with search and dropdown
   │       └── EmptyState.jsx        # Shown when no modules exist
+  ├── utils/
+  │   ├── boldSearch.jsx            # Utility to bold the matched search query
+  │   ├── validURL                  # Utility to validate URL
   ├── assets/
   ├── App.jsx                       # App entry point
   ├── App.css                       # Application styling
   ├── main.jsx
   └── index.css
+  ├── ThemeContext.jsx              # Stores global theme state
 ```
 
 ## Application Architecture
@@ -125,18 +132,9 @@ App
     ├── Header
     ├── EmptyState (conditionally rendered)
     ├── ModuleCard (multiple instances)
-    │   └── ModuleItem (multiple instances)
+    │   └── ItemCard (multiple instances)
+    ├── ItemCard (multiple instances)
     ├── ModuleModal
     ├── LinkModal
     └── UploadModal
 ```
-
-## Handoff Notes for Candidates
-
-When extending this application:
-
-1. Follow the established component structure and naming conventions
-2. Maintain consistent styling with the existing UI, Try to make the UI consistent with the Figma design
-3. Use React state appropriately for new features
-4. Ensure responsive behavior works on all screen sizes
-5. Add appropriate comments for complex logic
