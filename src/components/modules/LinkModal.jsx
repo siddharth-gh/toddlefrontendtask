@@ -1,21 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const LinkModal = ({ isOpen, onClose, onSave, moduleId }) => {
+const LinkModal = ({
+  isOpen,
+  onClose,
+  onSave,
+  moduleId,
+  setCurrentLink,
+  link = null,
+}) => {
   const [linkTitle, setLinkTitle] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
+
+  useEffect(() => {
+    setLinkTitle(link ? link.title : '');
+    setLinkUrl(link ? link.url : '');
+  }, [link, isOpen]);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    onSave({
-      id: Date.now().toString(),
-      moduleId,
-      type: 'link',
-      title: linkTitle.trim(),
-      url: linkUrl.trim(),
-    });
+    if (link) {
+      onSave({ ...link, title: linkTitle.trim(), url: linkUrl.trim() });
+    } else {
+      onSave({
+        id: Date.now().toString(),
+        moduleId,
+        type: 'link',
+        title: linkTitle.trim(),
+        url: linkUrl.trim(),
+      });
+    }
+
     setLinkTitle('');
     setLinkUrl('');
+    setCurrentLink(null);
   };
 
   if (!isOpen) return null;
@@ -24,7 +42,7 @@ const LinkModal = ({ isOpen, onClose, onSave, moduleId }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Add a link</h2>
+          <h2>{link ? 'Edit link' : 'Add a link'}</h2>
           <button className="modal-close" onClick={onClose}>
             ×
           </button>
@@ -64,7 +82,7 @@ const LinkModal = ({ isOpen, onClose, onSave, moduleId }) => {
               className="btn-create"
               disabled={!linkTitle.trim() || !linkUrl.trim()}
             >
-              Add link
+              {link ? 'Save' : 'Add link'}
             </button>
           </div>
         </form>
